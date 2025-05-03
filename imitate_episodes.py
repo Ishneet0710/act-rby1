@@ -21,6 +21,8 @@ from sim_env import BOX_POSE
 import IPython
 e = IPython.embed
 
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+
 def main(args):
     set_seed(1)
     # command line parameters
@@ -47,7 +49,8 @@ def main(args):
     camera_names = task_config['camera_names']
 
     # fixed parameters
-    state_dim = 14
+    state_dim = 42
+    action_dim = 26
     lr_backbone = 1e-5
     backbone = 'resnet18'
     if policy_class == 'ACT':
@@ -65,10 +68,12 @@ def main(args):
                          'dec_layers': dec_layers,
                          'nheads': nheads,
                          'camera_names': camera_names,
+                         'state_dim': state_dim,
+                         'action_dim': action_dim,
                          }
     elif policy_class == 'CNNMLP':
         policy_config = {'lr': args['lr'], 'lr_backbone': lr_backbone, 'backbone' : backbone, 'num_queries': 1,
-                         'camera_names': camera_names,}
+                         'camera_names': camera_names, 'state_dim': state_dim, 'action_dim': action_dim,}
     else:
         raise NotImplementedError
 
@@ -316,7 +321,10 @@ def eval_bc(config, ckpt_name, save_episode=True):
 def forward_pass(data, policy):
     image_data, qpos_data, action_data, is_pad = data
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    image_data, qpos_data, action_data, is_pad = image_data.to(device), qpos_data.to(device), action_data.to(device), is_pad.to(device)
+    image_data = image_data.to(device).float()
+    qpos_data = qpos_data.to(device).float()
+    action_data = action_data.to(device).float()
+    is_pad = is_pad.to(device)
     return policy(qpos_data, image_data, action_data, is_pad) # TODO remove None
 
 
