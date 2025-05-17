@@ -23,7 +23,7 @@ e = IPython.embed
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 """
-python imitate_episodes.py --task_name sim_task --ckpt_dir ckpt2 --policy_class ACT --kl_weight 10 --chunk_size 100 --hidden_dim 512 --batch_size 8 --dim_feedforward 3200 --num_epochs 20  --lr 1e-5 --seed 0
+python imitate_episodes.py --task_name sim_task --ckpt_dir ckpt2 --policy_class ACT --kl_weight 10 --chunk_size 100 --hidden_dim 512 --batch_size 8 --dim_feedforward 3200 --num_epochs 20  --lr 1e-5 --seed 0 --eval --onscreen_render
 """
 def main(args):
     set_seed(1)
