@@ -34,7 +34,7 @@ SIM_TASK_CONFIGS = {
         'dataset_dir': DATA_DIR,
         'num_episodes': 2,
         'episode_len': 5355,
-        'camera_names': ['cam_head', 'cam_ee_l' ,'cam_ee_r']
+        'camera_names': ['front_camera', 'cam_ee_l' ,'cam_ee_r']
     },
 }
 
